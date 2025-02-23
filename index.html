@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <style>
+            body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .container {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgb(234, 219, 173);
+            border-radius: 8px;
+            width: 80%;
+            margin: 20px auto;
+            overflow: visible;
+        }
+
+        .divv {
+            background-color: pink;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .para1 {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+            color: #333;
+        }
+
+        .para2 {
+            font-size: 16px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .container p {
+            padding: 5px;
+            margin: 0;
+        }
+
+        .divv:hover {
+            background-color: lightcoral;
+        }
+        #search-input {
+            width: 250px;
+            padding: 8px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .search-button {
+            padding: 8px 15px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    </head>
+    <body>
+    <h1>VIEW ROUTES</h1>
+    <input id="search-input" placeholder="Search item">
+    <button class="search-button" type="submit" onclick="fetchdata()">Search</button>
+    <div class="container">
+      
+    </div>
+
+       
+     
+  
+    <script>
+        //   function get_serached(event){
+        //     event.preventDefault();
+        //     let get_item = document.getElementById("search-input").value;
+        //     $.ajax({
+        //         url:"http://127.0.0.1:8000/search?area_item="+get_item,
+
+        //         method:"post",
+        //         dataType:"json",
+        //         contentType:"application/json",
+        //         success:function(data){
+        //             iterate_data(data)
+        //         },
+        //         error:function(error){
+        //             console.log(error)
+        //         }
+
+                
+        //     })
+
+
+        // }
+     
+        function updateroute(id, routenum, areas) {
+    // Store values in localStorage
+    localStorage.setItem("routeId", id);
+    localStorage.setItem("routeNum", routenum);
+    localStorage.setItem("areas", areas);
+
+    // Open update.html in a new tab
+    window.open("update.html", "_blank");
+}
+
+        function show_disp(routenum,areas,id){
+            let maindiv = document.getElementsByClassName("container")[0]
+            let divv = document.createElement("div");
+            let para = document.createElement("p");
+            let btnn = document.createElement("button")
+            btnn.classList.add("btnupdate")
+            divv.classList.add("divv");
+            para.classList.add("para1");
+
+            let anotherpara = document.createElement("p");
+            anotherpara.classList.add("para2")
+            para.innerText = routenum;
+            anotherpara.innerText = areas
+            btnn.innerText="update"
+            divv.appendChild(para)
+            divv.appendChild(anotherpara)
+            divv.appendChild(btnn)
+            maindiv.appendChild(divv)
+            btnn.addEventListener("click", function() {
+        updateroute(id, routenum, areas);
+    });
+
+       
+            
+
+        
+        }
+  
+        function iterate_data(jsondata){
+            $(".container").empty();
+            jsondata.forEach(item => {
+                show_disp(item.routes_no, item.areas,item.id);
+            });
+
+        }
+        function fetchdata(){
+            let get_item = document.getElementById("search-input").value;
+            if(!get_item){
+
+            $.ajax({
+                url:'http://127.0.0.1:8000/readd',
+                type:"GET",
+                dataType:'json',
+                success:function(data){
+                    iterate_data(data)
+                },
+                error: function(error){
+                    console.log(error)
+                }
+
+
+            })
+        }
+        else{
+            $.ajax({
+                url:"http://127.0.0.1:8000/search?area_item="+get_item,
+
+                method:"post",
+                dataType:"json",
+                contentType:"application/json",
+                success:function(data){
+                    iterate_data(data)
+                },
+                error:function(error){
+                    console.log(error)
+                }
+
+                
+            }) 
+        }
+
+
+        }
+        $(document).ready(function() {
+        fetchdata();
+    });
+    setInterval(fetchdata, 5000);
+  
+
+
+
+    </script>
+</body>
+</html>

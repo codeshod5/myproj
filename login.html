@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>HTML Login Form</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="main">
+        <h1>GeeksforGeeks</h1>
+        <h3>Enter your login credentials</h3>
+
+        <form id="login-form">
+            <label for="email">
+                Usermail:
+            </label>
+            <input type="text" id="email" class="mail" name="email" placeholder="Enter your Email" required>
+
+            <label for="area">
+                Area:
+            </label>
+            <input type="text" id="area" class="areas" name="area" placeholder="Enter your Area" required>
+
+            <label for="password">
+                Password:
+            </label>
+            <input type="password" id="password" class="pass" name="password" placeholder="Enter your Password" required>
+
+            <div class="wrap">
+                <button type="submit" onclick="handleLogin(event)">
+                    Submit
+                </button>
+            </div>
+        </form>
+
+        <p>Not registered?
+            <a href="#" style="text-decoration: none;">
+                Create an account
+            </a>
+        </p>
+    </div>
+
+    <script>
+        
+        
+
+      
+        function handleLogin(event) {
+            event.preventDefault(); 
+
+            const email = document.getElementById("email").value;
+            const area = document.getElementById("area").value;
+            const password = document.getElementById("password").value;
+
+            
+            $.ajax({
+                url: "http://127.0.0.1:8000/authenti",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ email: email, area: area, password: password }),
+                // credentials: "include",
+                success: function (data) {
+                    console.log("Login successful:", data);
+                    localStorage.setItem("access_token",data.acess_token)
+                    // const token = localStorage.getItem("acess_token");
+                    // console.log("this is",token);
+                   
+                    alert("Login successful!");
+                   
+                    
+                },
+                error: function (error) {
+                    console.error("Login failed:", error);
+                    alert("Login failed. Please check your credentials.");
+                }
+            });
+        }
+
+        
+        
+    </script>
+</body>
+
+</html>

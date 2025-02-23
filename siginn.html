@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HTML Login Form</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <div class="main">
+        <h1>GeeksforGeeks</h1>
+        <h3>Enter your sigin credentials</h3>
+
+        <form action="">
+            <label for="first">
+                Usermail:
+            </label>
+            <input type="text" id="first" class="mail" name="" 
+                placeholder="Enter your Username" required>
+
+            <label for="first">
+                Area:
+            </label>
+            <input type="text"  class="areas"name="first" 
+                placeholder="Enter your Username" required>
+
+            <label for="password">
+                Password:
+            </label>
+            <input type="password" id="password" class="pass"name="password" 
+                placeholder="Enter your Password" required>
+
+            <div class="wrap">
+                <button type="submit" onclick="createdata()">
+                    Submit
+                </button>
+            </div>
+        </form>
+        
+        <p>Not registered?
+            <a href="#" style="text-decoration: none;">
+                Create an account
+            </a>
+        </p>
+    </div>
+    <script>
+        function createdata(){
+        const mail = document.getElementsByClassName("mail")[0].value;
+        const areas = document.getElementsByClassName("areas")[0].value;
+        const pass = document.getElementsByClassName("pass")[0].value;
+        // when you use clas this is imp [0] to access the first one in id not needed
+
+        
+        $.ajax({
+            url:"http://127.0.0.1:8000/createe",
+            method:"post",
+            contentType:"application/json",
+            data:JSON.stringify({email:mail,area:areas,password:pass}),
+            success: function(data){
+                alert("data saved ")
+                console.log(data)
+
+            },
+            error: function(error){
+                console.log(error)
+            }
+
+            
+        })
+    }
+    // createdata();
+    </script>
+
+</body>
+
+
+</html>

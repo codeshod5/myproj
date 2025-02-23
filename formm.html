@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+    <p>route no: <input type="number" id="p1" placeholder="enter routeno"></p>
+    <p>areas<input type="text" id="p2" placeholder="enter areas"></p>
+    <button type="submit" onclick="createdata()">submit</button>
+    <button type="submit" onclick="updatedata()">update</button>
+    
+    </div>
+    <script>
+       
+
+        function createdata(){
+            const  rou = document.getElementById("p1").value;
+            const ar = document.getElementById("p2").value;
+            $.ajax({
+                url:'http://127.0.0.1:8000/routes',
+                method:"post",
+                contentType:"application/json",
+                data: JSON.stringify({routes_no:rou,areas:ar}),
+                success: function(data){
+                    console.log(data)
+
+                },
+                error: function(error){
+                    console.log(error)
+
+
+                }
+            })
+        }
+        createdata();
+    
+    // function 
+
+    </script>
+
+</body>
+</html>
